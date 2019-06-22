@@ -22,6 +22,9 @@ public class Reservation {
 		this.bookedRooms = new ArrayList<Room>();
 	}
 	
+	public String getId() {
+		return id;
+	}
 	public void addRoom(Room room) {
 		bookedRooms.add(room);
 	}

@@ -15,7 +15,6 @@ public class Room {
 		this.name = name;
 		this.size = size;
 		this.reservations = new ArrayList<Reservation>();
-		System.out.println(size + name);
 	}
 	
 	public String getName() {
@@ -32,6 +31,10 @@ public class Room {
 
 	public void addReservation(Reservation reservation) {
 		reservations.add(reservation);
+	}
+	
+	public void removeReservation(Reservation reservation) {
+		reservations.remove(reservation);
 	}
 	
 	public boolean checkAvailable(LocalDate start, LocalDate end) {
@@ -51,9 +54,9 @@ public class Room {
 			LocalDate start, LocalDate end) {
 		
 		if (newEnd.isBefore(start) || newStart.isAfter(end)) {
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 		
 	}

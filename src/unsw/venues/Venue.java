@@ -27,7 +27,7 @@ public class Venue {
 		boolean alreadyExists = false;
 		
 		for(Room i : rooms) {
-			if(i.getName() == name) {
+			if(i.getName().equals(name)) {
 				alreadyExists = true;
 			}
 		}
@@ -40,17 +40,15 @@ public class Venue {
 	
 	public boolean checkAvailability(LocalDate start, LocalDate end,
 			int small, int medium, int large) {
-		boolean available;
 		
+		boolean available = true;
 		int availableSmall = countAvailable(start, end, "small");
 		int availableMedium = countAvailable(start, end, "medium");
 		int availableLarge = countAvailable(start, end, "large");
 		
-		if ((small < availableSmall) || (medium < availableMedium)
-				|| (large < availableLarge)) {
+		if ((small > availableSmall) || (medium > availableMedium)
+				|| (large > availableLarge)) {
 			available = false;
-		} else {
-			available = true;
 		}
 
 		return available;
@@ -61,7 +59,7 @@ public class Venue {
 		int roomsAvailable = 0;
 
 		for (Room i : rooms) {
-			if ((i.getSize() == size) && (i.checkAvailable(start, end))){
+			if ((i.getSize().equals(size)) && (i.checkAvailable(start, end))){
 				roomsAvailable++;
 			}
 		}

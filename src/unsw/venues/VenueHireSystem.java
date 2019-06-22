@@ -36,6 +36,7 @@ public class VenueHireSystem {
     }
 
     private void processCommand(JSONObject json) {
+    	
         switch (json.getString("command")) {
 
         case "room":
@@ -55,13 +56,33 @@ public class VenueHireSystem {
 
             JSONObject result = request(id, start, end, small, medium, large);
 
-            System.out.println(result.toString(2));
+            System.out.println(result.toString());
             break;
             
-        case "list":
-        	System.out.println("list called");
+        case "change":
+        	System.out.println("change called");
+        	String id1 = json.getString("id");
+            LocalDate start1 = LocalDate.parse(json.getString("start"));
+            LocalDate end1 = LocalDate.parse(json.getString("end"));
+            int small1 = json.getInt("small");
+            int medium1 = json.getInt("medium");
+            int large1 = json.getInt("large");
 
-        // TODO Implement other commands
+            JSONObject result1 = change(id1, start1, end1, small1, medium1, large1);
+            
+            System.out.println(result1.toString());
+        	
+        	break;
+        	
+        case "cancel":
+        	String id2 = json.getString("id");
+        	JSONObject result2 = cancel(id2);
+        	System.out.println(result2.toString());
+        	break;
+        	
+        case "list":
+        	System.out.println("Hello");
+        	break;
         }
     }
 
@@ -70,7 +91,7 @@ public class VenueHireSystem {
     	boolean added = false;
     	
     	for(Venue i : venues) {
-    		if (i.getName() == venue) {
+    		if (i.getName().equals(venue)) {
     			i.addRoom(room, size);
     			added = true;
     		}
@@ -101,6 +122,7 @@ public class VenueHireSystem {
         		result.put("rooms", rooms);
         		reservations.add(newReservation);
         		added = true;
+        		break;
         	}
         }
         
@@ -116,13 +138,16 @@ public class VenueHireSystem {
     	
     	Reservation newReservation = new Reservation(id, venue, start, end);
 
-    	for(Room i : venue.rooms) {
-    		if ((i.size == "small") && (small > 0)){
+    	for(Room i : venue.getRooms()) {
+    		if ((i.getSize().equals("small")) && (small > 0) && (i.checkAvailable(start, end))){
     			newReservation.addRoom(i);
-    		} else if ((i.size == "medium") && (medium > 0)){
+    			small--;
+    		} else if ((i.getSize().equals("medium")) && (medium > 0) && (i.checkAvailable(start, end))){
     			newReservation.addRoom(i);
-    		} else if ((i.size == "large") && (large > 0)){
+    			medium--;
+    		} else if ((i.getSize().equals("large")) && (large > 0) && (i.checkAvailable(start, end))){
     			newReservation.addRoom(i);
+    			large--;
     		}
     	}
 
@@ -132,6 +157,66 @@ public class VenueHireSystem {
     	}
 
     	return newReservation;    	
+    }
+    
+    public JSONObject cancel(String id) {
+    	JSONObject result = new JSONObject();
+    	
+    	boolean found = false;
+    	Reservation target = null;
+    	for(Reservation i : reservations) {
+    		if(i.getId().equals(id)) {
+    			target = i;
+    		}
+    	}
+    	
+    	for(Room j : target.bookedRooms) {
+			j.removeReservation(target);
+			found = true;
+		}
+		
+    	
+    	if(found == true) {
+    		reservations.remove(target);
+    		System.out.println("Hello");
+    		found = true;
+    		result.put("status", "success");
+    	} else {
+    		result.put("status", "rejected");
+    	}
+    	
+    	return result;
+    }
+    
+    public JSONObject change(String id, LocalDate start, LocalDate end, int small, int medium, int large) {
+    	
+    	JSONObject result = new JSONObject();
+    	boolean foundOriginal = false;
+    	Reservation original = null;
+    	
+    	for(Reservation i : reservations) {
+    		if(i.getId().equals(id)) {
+    			original = i;
+    			foundOriginal = true;
+    		}
+    	}
+    	
+    	if(foundOriginal == true) {
+			cancel(original.getId());
+			result = request(id, start, end, small, medium, large);
+			
+			if(result.getString("status").equals("rejected")) {
+				reservations.add(original);
+				for(Room i : original.getBookedRooms()) {
+					i.addReservation(original);
+				}
+			}
+			
+    	} else {
+    		result.put("status", "rejected");
+    	}
+    	
+    	return result;
     }
 
     public static void main(String[] args) {
