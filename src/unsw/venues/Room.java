@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Room {
 
-	String name;
-	String size;
-	List<Reservation> reservations;
+	private String name;
+	private String size;
+	private List<Reservation> reservations;
 	
 	public Room(String name, String size) {
 		
@@ -30,7 +30,19 @@ public class Room {
 	}
 
 	public void addReservation(Reservation reservation) {
-		reservations.add(reservation);
+		
+		boolean emptyList = true;
+		for(Reservation i : reservations) {
+			if(i.getStart().isAfter(reservation.getStart())) {
+				reservations.add(reservations.indexOf(i), reservation);
+				emptyList = false;
+				break;
+			}
+		}
+		
+		if(emptyList == true) {
+			reservations.add(reservation);
+		}
 	}
 	
 	public void removeReservation(Reservation reservation) {
@@ -42,7 +54,7 @@ public class Room {
 		boolean available = true;
 		
 		for(Reservation i : reservations) {
-			if (checkClash(start, end, i.start, i.end)) {
+			if (checkClash(start, end, i.getStart(), i.getEnd())) {
 				available = false;
 			}
 		}
@@ -58,7 +70,5 @@ public class Room {
 		} else {
 			return true;
 		}
-		
 	}
-	
 }

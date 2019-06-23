@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Venue {
 	
-	String name;
-	List<Room> rooms;
+	private String name;
+	private List<Room> rooms;
 	
 	public Venue(String name) {
 		this.name = name;

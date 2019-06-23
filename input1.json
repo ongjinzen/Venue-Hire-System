@@ -1,0 +1,22 @@
+{ "command": "room", "venue": "UNSW", "room": "UNSW1", "size": "small" }
+{ "command": "room", "venue": "UNSW", "room": "UNSW2", "size": "medium" }
+{ "command": "room", "venue": "UNSW", "room": "UNSW3", "size": "large" }
+{ "command": "room", "venue": "USYD", "room": "USYD1", "size": "small" }
+{ "command": "room", "venue": "USYD", "room": "USYD2", "size": "medium" }
+{ "command": "room", "venue": "USYD", "room": "USYD3", "size": "large" }
+{ "command": "request", "id": "test_booking_1", "start": "2019-03-25", "end": "2019-03-29", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_booking_2", "start": "2019-03-25", "end": "2019-03-29", "small": 0, "medium": 1, "large": 0 }
+{ "command": "request", "id": "test_booking_3", "start": "2019-03-25", "end": "2019-03-29", "small": 0, "medium": 0, "large": 1 }
+{ "command": "request", "id": "test_booking_4", "start": "2019-03-25", "end": "2019-03-29", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_booking_5", "start": "2019-03-25", "end": "2019-03-29", "small": 0, "medium": 1, "large": 0 }
+{ "command": "request", "id": "test_booking_6", "start": "2019-03-25", "end": "2019-03-29", "small": 0, "medium": 0, "large": 1 }
+{ "command": "request", "id": "test_booking_7", "start": "2019-03-30", "end": "2019-03-30", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_booking_8", "start": "2019-03-30", "end": "2019-03-30", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_booking_9", "start": "2019-03-21", "end": "2019-03-21", "small": 1, "medium": 1, "large": 0 }
+{ "command": "request", "id": "test_fail_booking_1", "start": "2019-03-24", "end": "2019-03-30", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_fail_booking_2", "start": "2019-03-24", "end": "2019-03-26", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_fail_booking_3", "start": "2019-03-27", "end": "2019-03-30", "small": 1, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_fail_booking_4", "start": "2019-03-01", "end": "2019-03-01", "small": 2, "medium": 0, "large": 0 }
+{ "command": "request", "id": "test_fail_booking_5", "start": "2019-03-24", "end": "2019-03-26", "small": 1, "medium": 1, "large": 0 }
+{ "command": "list", "venue": "UNSW" }
+{ "command": "list", "venue": "USYD" }

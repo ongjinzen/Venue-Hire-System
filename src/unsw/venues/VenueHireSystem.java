@@ -22,13 +22,8 @@ import org.json.JSONObject;
  */
 public class VenueHireSystem {
 
-    /**
-     * Constructs a venue hire system. Initially, the system contains no venues,
-     * rooms, or bookings.
-     */
-	
-	List<Venue> venues;
-	List<Reservation> reservations;
+	private List<Venue> venues;
+	private List<Reservation> reservations;
 	
     public VenueHireSystem() {
         this.venues = new ArrayList<Venue>();
@@ -60,7 +55,6 @@ public class VenueHireSystem {
             break;
             
         case "change":
-        	System.out.println("change called");
         	String id1 = json.getString("id");
             LocalDate start1 = LocalDate.parse(json.getString("start"));
             LocalDate end1 = LocalDate.parse(json.getString("end"));
@@ -81,12 +75,14 @@ public class VenueHireSystem {
         	break;
         	
         case "list":
-        	System.out.println("Hello");
+        	String venue3 = json.getString("venue");
+        	JSONArray result3 = list(venue3);
+        	System.out.println(result3.toString(1));
         	break;
         }
     }
 
-    private void addRoom(String venue, String room, String size) {
+    public void addRoom(String venue, String room, String size) {
         
     	boolean added = false;
     	
@@ -114,7 +110,7 @@ public class VenueHireSystem {
         	if(i.checkAvailability(start, end, small, medium, large)) {
         		Reservation newReservation = makeReservation(id, start, end, i, small, medium, large);
         		result.put("status", "success");
-        		result.put("venue", i.name);
+        		result.put("venue", i.getName());
         		JSONArray rooms = new JSONArray();
         		for (Room j : newReservation.getBookedRooms()) {
         			rooms.put(j.getName());
@@ -170,7 +166,7 @@ public class VenueHireSystem {
     		}
     	}
     	
-    	for(Room j : target.bookedRooms) {
+    	for(Room j : target.getBookedRooms()) {
 			j.removeReservation(target);
 			found = true;
 		}
@@ -178,7 +174,6 @@ public class VenueHireSystem {
     	
     	if(found == true) {
     		reservations.remove(target);
-    		System.out.println("Hello");
     		found = true;
     		result.put("status", "success");
     	} else {
@@ -217,6 +212,40 @@ public class VenueHireSystem {
     	}
     	
     	return result;
+    }
+    
+    public JSONArray list(String venue) {
+    	
+    	JSONArray result = new JSONArray();
+    	boolean venueFound = false;
+    	Venue venObject = null;
+    	
+    	for(Venue i : venues) {
+    		if(i.getName().equals(venue)) {
+    			venueFound = true;
+    			venObject = i;
+    		}
+    	}
+    	
+    	if (venueFound == true);{
+    		for(Room i : venObject.getRooms()) {
+    			JSONObject room = new JSONObject();
+    			JSONArray listReservations = new JSONArray();
+    			for(Reservation k : i.getReservations()) {
+    				JSONObject reservation = new JSONObject();
+    				reservation.put("id", k.getId());
+    				reservation.put("start", k.getStart());
+    				reservation.put("end", k.getEnd());
+    				listReservations.put(reservation);
+    			}    			
+    			room.put("reservations", listReservations);
+    			room.put("room", i.getName());    			
+    			result.put(room);
+        	}
+    	}
+    	
+    	return result;
+    	
     }
 
     public static void main(String[] args) {

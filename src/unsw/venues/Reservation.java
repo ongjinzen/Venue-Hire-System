@@ -6,17 +6,15 @@ import java.util.List;
 
 public class Reservation {
 
-	String id;
-	Venue venue;
-	List<Room> bookedRooms;
-	LocalDate start;
-	LocalDate end;
+	private String id;
+	private List<Room> bookedRooms;
+	private LocalDate start;
+	private LocalDate end;
 	
 	public Reservation(String id, Venue venue,
 			LocalDate start, LocalDate end) {
 		
 		this.id = id;
-		this.venue = venue;
 		this.start = start;
 		this.end = end;
 		this.bookedRooms = new ArrayList<Room>();
@@ -33,4 +31,11 @@ public class Reservation {
 		return bookedRooms;
 	}
 	
+	public LocalDate getStart() {
+		return start;
+	}
+	
+	public LocalDate getEnd() {
+		return end;
+	}
 }

@@ -1,0 +1,135 @@
+{"venue":"UNSW","rooms":["UNSW1"],"status":"success"}
+[
+ {
+  "reservations": [{
+   "start": "2019-03-25",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW1"
+ },
+ {
+  "reservations": [],
+  "room": "UNSW2"
+ },
+ {
+  "reservations": [],
+  "room": "UNSW3"
+ }
+]
+{"venue":"UNSW","rooms":["UNSW2"],"status":"success"}
+[
+ {
+  "reservations": [],
+  "room": "UNSW1"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-25",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW2"
+ },
+ {
+  "reservations": [],
+  "room": "UNSW3"
+ }
+]
+{"venue":"UNSW","rooms":["UNSW2"],"status":"success"}
+{"status":"rejected"}
+{"venue":"UNSW","rooms":["UNSW2","UNSW3"],"status":"success"}
+{"venue":"UNSW","rooms":["UNSW2","UNSW3"],"status":"success"}
+{"venue":"USYD","rooms":["USYD2"],"status":"success"}
+{"venue":"UNSW","rooms":["UNSW1"],"status":"success"}
+[
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_2"
+  }],
+  "room": "UNSW1"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW2"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW3"
+ }
+]
+[
+ {
+  "reservations": [],
+  "room": "USYD1"
+ },
+ {
+  "reservations": [],
+  "room": "USYD2"
+ },
+ {
+  "reservations": [],
+  "room": "USYD3"
+ }
+]
+{"venue":"USYD","rooms":["USYD2","USYD3"],"status":"success"}
+{"venue":"UNSW","rooms":["UNSW1"],"status":"success"}
+{"status":"rejected"}
+[
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_3"
+  }],
+  "room": "UNSW1"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW2"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_1"
+  }],
+  "room": "UNSW3"
+ }
+]
+[
+ {
+  "reservations": [],
+  "room": "USYD1"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_2"
+  }],
+  "room": "USYD2"
+ },
+ {
+  "reservations": [{
+   "start": "2019-03-20",
+   "end": "2019-03-29",
+   "id": "test_booking_2"
+  }],
+  "room": "USYD3"
+ }
+]
