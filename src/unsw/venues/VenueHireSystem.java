@@ -25,11 +25,20 @@ public class VenueHireSystem {
 	private List<Venue> venues;
 	private List<Reservation> reservations;
 	
+    /**
+     * Instantiates a new VenueHireSystem
+     * and initializes a new list of venues
+     * and a new list of reservations
+     */
     public VenueHireSystem() {
         this.venues = new ArrayList<Venue>();
         this.reservations = new ArrayList<Reservation>();
     }
 
+    /**
+     * Processes the command parsed in.
+     * @param json Command to be carried out
+     */
     private void processCommand(JSONObject json) {
     	
         switch (json.getString("command")) {
@@ -61,11 +70,8 @@ public class VenueHireSystem {
             int small1 = json.getInt("small");
             int medium1 = json.getInt("medium");
             int large1 = json.getInt("large");
-
             JSONObject result1 = change(id1, start1, end1, small1, medium1, large1);
-            
             System.out.println(result1.toString());
-        	
         	break;
         	
         case "cancel":
@@ -82,10 +88,22 @@ public class VenueHireSystem {
         }
     }
 
+    /**
+     * Add a new room to the system
+     * <p>
+     * This method adds a room to the system
+     * by adding it to a list of rooms in a venue.
+     * If the venue does not already exist, it will
+     * be instantiated.
+     * @param venue Name of venue
+     * @param room Name of room
+     * @param size Size of room
+     */
     public void addRoom(String venue, String room, String size) {
         
     	boolean added = false;
     	
+    	// Look for the venue and add a room to the venue.
     	for(Venue i : venues) {
     		if (i.getName().equals(venue)) {
     			i.addRoom(room, size);
@@ -93,6 +111,8 @@ public class VenueHireSystem {
     		}
     	}
     	
+    	// If venue does not exist, create the venue
+    	// and add the room to it.
     	if (added == false) {
     		Venue newVenue = new Venue(venue);
     		venues.add(newVenue);
@@ -100,12 +120,32 @@ public class VenueHireSystem {
     	}
     }
 
+    /**
+     * This method checks if a request for a reservation
+     * can be fulfilled. If it can be fulfilled, the reservation
+     * will be made. If it cannot be fulfilled, the reservation
+     * will not be made.
+     * @param id ID of reservation
+     * @param start Start date
+     * @param end End date
+     * @param small Number of small rooms required
+     * @param medium Number of medium rooms required
+     * @param large Number of large rooms required
+     * @return result of booking
+     */
     public JSONObject request(String id, LocalDate start, LocalDate end,
             int small, int medium, int large) {
     	
         JSONObject result = new JSONObject();
         boolean added = false;
         
+        /**
+         * Check for venues that are able to fulfill the request.
+         * Make a reservation at the first available venue.
+         * Add reservation to list of reservations in rooms used
+         * Add the reservation object to the list of reservations
+         * in the system.
+         */
         for(Venue i : venues) {
         	if(i.checkAvailability(start, end, small, medium, large)) {
         		Reservation newReservation = makeReservation(id, start, end, i, small, medium, large);
@@ -113,6 +153,7 @@ public class VenueHireSystem {
         		result.put("venue", i.getName());
         		JSONArray rooms = new JSONArray();
         		for (Room j : newReservation.getBookedRooms()) {
+        			j.addReservation(newReservation);
         			rooms.put(j.getName());
         		}
         		result.put("rooms", rooms);
@@ -129,6 +170,17 @@ public class VenueHireSystem {
         return result;
     }
     
+    /**
+     * Instantiates a reservation.
+     * @param id ID of reservation
+     * @param start Start date
+     * @param end End date
+     * @param venue Name of venue
+     * @param small Number of small rooms required
+     * @param medium Number of medium rooms required
+     * @param large Number of large rooms required
+     * @return Reservation object
+     */
     private Reservation makeReservation(String id, LocalDate start, LocalDate end,
     		Venue venue, int small, int medium, int large) {
     	
@@ -147,14 +199,19 @@ public class VenueHireSystem {
     		}
     	}
 
-		
-    	for (Room i : newReservation.getBookedRooms()) {
-    		i.addReservation(newReservation);
-    	}
-
     	return newReservation;    	
     }
     
+    /**
+     * Cancels a reservation by removing
+     * reservation object with the given ID
+     * from the lists of reservations in the
+     * list of rooms in the reservation object
+     * as well as the list of reservations in
+     * the system.
+     * @param id ID of reservation
+     * @return Result of cancellation
+     */
     public JSONObject cancel(String id) {
     	JSONObject result = new JSONObject();
     	
@@ -183,12 +240,22 @@ public class VenueHireSystem {
     	return result;
     }
     
+    /**
+     * @param id ID of reservation
+     * @param start New start date
+     * @param end New end date
+     * @param small New number of small rooms required
+     * @param medium New number of medium rooms required
+     * @param large New number of large rooms required
+     * @return Result of change
+     */
     public JSONObject change(String id, LocalDate start, LocalDate end, int small, int medium, int large) {
     	
     	JSONObject result = new JSONObject();
     	boolean foundOriginal = false;
     	Reservation original = null;
     	
+    	// Looking for the reservation
     	for(Reservation i : reservations) {
     		if(i.getId().equals(id)) {
     			original = i;
@@ -196,6 +263,13 @@ public class VenueHireSystem {
     		}
     	}
     	
+    	/**
+    	 * Cancel original reservation and
+    	 * try to make a new reservation with
+    	 * the new requirements.
+    	 * If no suitable venues are found,
+    	 * add the old reservation back to the lists
+    	 */
     	if(foundOriginal == true) {
 			cancel(original.getId());
 			result = request(id, start, end, small, medium, large);
@@ -214,6 +288,14 @@ public class VenueHireSystem {
     	return result;
     }
     
+    /**
+     * Create a list of reservations for
+     * each room in a venue.
+     * Add the lists into a list to be
+     * put into the JSONArray
+     * @param venue Name of venue
+     * @return command result
+     */
     public JSONArray list(String venue) {
     	
     	JSONArray result = new JSONArray();
