@@ -220,16 +220,15 @@ public class VenueHireSystem {
     	for(Reservation i : reservations) {
     		if(i.getId().equals(id)) {
     			target = i;
+    			found = true;
     		}
     	}
     	
-    	for(Room j : target.getBookedRooms()) {
-			j.removeReservation(target);
-			found = true;
-		}
-		
-    	
     	if(found == true) {
+    		for(Room j : target.getBookedRooms()) {
+    			j.removeReservation(target);
+    			
+    		}
     		reservations.remove(target);
     		found = true;
     		result.put("status", "success");
